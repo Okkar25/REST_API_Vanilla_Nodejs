@@ -5,7 +5,8 @@ const { writeDataToFile } = require("../utils");
 // console.log(__dirname);
 // console.log(__dirname.split("\\").slice(0, -1).join("\\"));
 // console.log(__filename);
-const productsFilePath = __dirname.split("\\").slice(0, -1).join("\\") + "\\data\\products.json";
+const productsFilePath =
+  __dirname.split("\\").slice(0, -1).join("\\") + "\\data\\products.json";
 
 const findAll = () => {
   return new Promise((resolve, reject) => {
@@ -29,10 +30,18 @@ const create = (product) => {
   });
 };
 
-//
+const update = (id, product) => {
+  return new Promise((resolve, reject) => {
+    const index = products.findIndex((p) => p.id === id);
+    products[index] = { id, ...product };
+    writeDataToFile(productsFilePath, products);
+    resolve(products[index]);
+  });
+};
 
 module.exports = {
   findAll,
   findById,
   create,
+  update,
 };
