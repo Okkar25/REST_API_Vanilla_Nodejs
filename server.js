@@ -1,10 +1,18 @@
 const http = require("http");
-const { getProducts } = require("./controllers/productController");
+const { getProducts, getProduct } = require("./controllers/productController");
 
 const server = http.createServer((req, res) => {
+  // all products
   if (req.url === "/api/products" && req.method === "GET") {
     getProducts(req, res);
-  } else {
+  }
+  // single all product
+  else if (req.url.match(/\/api\/products\/\w+/) && req.method === "GET") {
+    const id = req.url.split("/")[3];
+    getProduct(req, res, id);
+  }
+  // Route Not Found
+  else {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify({
@@ -17,4 +25,3 @@ const server = http.createServer((req, res) => {
 const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
-
